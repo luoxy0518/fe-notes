@@ -6,6 +6,7 @@
  */
 
 var data = 'module1';
-function module (){
+
+function module() {
     console.log(data);
 }

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        <div id="root" style="width:40px; height:40px; background: green"></div>
+
+        <!-- 引入的js必须有一定顺序 -->
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+        <script type="text/javascript" src="./module1.js"></script>
+        <script>
+            module1.changeDOMBk();  // 模块1依赖了jQuery
+        </script>
+    </body>
+</html>
