@@ -7,7 +7,8 @@ exports.age = 24;
 
 exports = {
     name: '小小',
-    age: 18
+    age: 18,
+    sss: 0
 }
 
 

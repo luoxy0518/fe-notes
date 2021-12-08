@@ -28,6 +28,22 @@ function module (){     // 与另一个文件中的module function产生冲突
     console.log(data);
 }
 ```
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script type="text/javascript" src="module1.js"></script>
+    <script type="text/javascript" src="module2.js"></script>
+    <script>
+        module();       // module1中的方法被module2覆盖
+    </script>
+</body>
+</html>
+```
 ##### namespace模式：简单对象封装
 - 作用：减少了全局变量污染，减少了命名冲突
 - 问题：不安全，数据不是私有的，内部属性可以被外部修改
@@ -49,6 +65,23 @@ var module2 = {
         return this.data;
     }
 }
+```
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script type="text/javascript" src="module1.js"></script>
+    <script type="text/javascript" src="module2.js"></script>
+    <script>
+        module1.data = '修改后的值';
+        console.log(module1);       // module1中的私有属性被修改
+    </script>
+</body>
+</html>
 ```
 ##### IIFE（immediately-invoked function expression）：利用匿名函数自执行形成闭包，封闭作用域
 - 作用：数据是私有的。将数据和行为封装到函数内部，通过给window添加属性，向外暴露接口。
@@ -139,8 +172,83 @@ var module2 = {
 
 #### <font color=f42323>引入多个script产生的问题</font>
 - 请求过多，浪费资源和时间
-页面中`script`过多，需要发送多个请求，必定会消耗多个资源。（请求资源时间 5 * 20Kb > 1 * 100kb）
+页面中`script`过多，需要发送多个请求，必定会消耗多个资源。（请求资源时间 `5 * 20Kb` > `1 * 100kb`）
 - `js`必须以一定顺序引入，当模块中的依赖过多时，可能会由于文件引入顺序问题而出错。
 - 由于以上两种原因，导致后期难以维护
 
 ### 二、模块化规范
+可以通过模块化规范来解决以上产生的问题，所以`CommonJS -> AMD -> CMD -> UMD -> Es6 Module` 应运而生。
+### 1.CommonJS【Node】
+`Node`采用了`CommonJS`模块规范。 
+1. 每个文件就是一个模块，每个文件有自己的作用域。在一个文件内定义的变量、函数、类都是私有的，其他文件不可见。
+   每个模块只对外界暴露需要通信的接口
+2. 同一文件，多次加载同一模块，模块只会加载一次，以后再加载，只会从缓存里读取结果。
+3. 在服务端，文件都存储在本地，读取速度会非常快，所以模块的加载是同步的。
+4. `CommonJS`模块是运行时加载，支持动态加载。
+#### 基本语法
+##### | 导出
+可以使用`module.exports = value`或者`export.exports.name = value`导入
+
+也可以省略`module`关键字（建议不要省略）`exports.name = value` 
+###### 直接导出
+```js
+module.exports.name = '小红';
+module.exports.age = 18;
+module.exports.list = [1, 2, 3]
+
+// 可以省略module关键字
+exports.name = '小李';
+exports.age = 17;
+
+```
+> 注意：如果使用`exports.name = value`导出单个值后，就不能再使用`exports = {...}`导出一个对象，会被忽略。
+```js
+/**
+ * 注意： 单个导出值之后，再导出对象值。修改无效，最终也只是导出单个值！
+ */
+exports.name = '小罗';
+exports.age = 24;
+
+exports = {
+    name: '小小',
+    age: 18,
+    sss: 0
+}
+
+// -------------- 导入 -------------
+
+const module1 = require('./02_单个导出后导出对象');
+console.log(module1); // {name: '小罗', age: 24}
+```
+
+##### | 导入
+`CommonJs`中使用`require`导入，可以通过解构赋值的方法获取单个值。
+```js
+// module1.js
+module.exports.name = '小红';
+exports.age = 17;
+
+// -------------- 导入 -------------
+
+const {name, age} = require('./module1');
+const module1 = require('./module1');
+```
+##### 重复导入只会加载一次
+```js
+let data = require("./index.js")
+let data = require("./index.js") // 不会在执行了
+```
+##### 动态导入
+`CommonJS` 在其运行时执行，并非编译时执行，支持动态导入
+```js
+const arr = ['./01_直接导出.js','./02_单个导出后导出对象.js'];
+const result = [];
+
+arr.forEach(url => {
+    result.push(require(url))
+});
+
+console.log(result); // [ { name: '小李', age: 17 }, { name: '小罗', age: 24 } ]
+```
+##### | 导入值是原值的拷贝
+`CommonJs`输出的是一个值的拷贝，**注意：基本/复杂数据类型的区别**。
