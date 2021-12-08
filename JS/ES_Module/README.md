@@ -205,6 +205,7 @@ exports.age = 17;
 /**
  * 注意： 单个导出值之后，再导出对象值。修改无效，最终也只是导出单个值！
  */
+// module1.js
 exports.name = '小罗';
 exports.age = 24;
 
@@ -216,7 +217,7 @@ exports = {
 
 // -------------- 导入 -------------
 
-const module1 = require('./02_单个导出后导出对象');
+const module1 = require('./module1.js');
 console.log(module1); // {name: '小罗', age: 24}
 ```
 
@@ -237,7 +238,6 @@ const module1 = require('./module1');
 let data = require("./index.js")
 let data = require("./index.js") // 不会在执行了
 ```
-git remote set-url origin https://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@github.com/luoxy0518/fe-notes.git
 #### 动态导入
 `CommonJS` 在其运行时执行，并非编译时执行，支持动态导入
 ```js
@@ -277,9 +277,9 @@ setTimeout(() => {
 
 > 浅拷贝：
 > 
-> 对于对象中的第一层数据为 简单数据类型 的，复制其值，更改副本的简单数据类型不会影响原数据；
+> 对于对象中的第一层数据为 简单数据类型 -> 更改副本的简单数据类型 -> 不会影响原数据；
 > 
-> 对于对象中的第一层数据为 复杂数据类型 的，复制其引用，更改副本的复杂数据类型会影响原数据
+> 对于对象中的第一层数据为 复杂数据类型 -> 更改副本的复杂数据类型 -> 会影响原数据
 ```js
 // module1.js
 let name = 1;
@@ -289,7 +289,6 @@ module.exports = {
     name: name,
     list: list
 }
-
 
 setTimeout(() => {
     list.push(1);
