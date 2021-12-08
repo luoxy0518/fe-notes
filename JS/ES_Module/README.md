@@ -238,6 +238,8 @@ const module1 = require('./module1');
 let data = require("./index.js")
 let data = require("./index.js") // 不会在执行了
 ```
+
+
 ##### 动态导入
 `CommonJS` 在其运行时执行，并非编译时执行，支持动态导入
 ```js
