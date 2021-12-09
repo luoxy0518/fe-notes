@@ -478,4 +478,137 @@ define(function (require, exports, module) {
 
 ---
 
-### ES6 Module
+### 4. ES6 Module
+在`ES6`之前，社区制定了一些模块加载方案，其中最主要的是`CommonJS`和`AMD`。
+其中`CommonJS`适用于服务器，`AMD`适用于浏览器。`ES6`的出现，完全可以取代`CommonJS`和`AMD`，成为浏览器和服务器通用的模块化解决方案。  
+
+**ES Module与AMD CommonJS设计思想区别**
+- `AMD、CommonJS`都只能在代码运行时，确定依赖，无法做到按需加载（代码运行时加载）；
+- `ES Module`设计思想尽量"静态化"，即代码 **编译阶段** 就确定模块输出的东西，以及模块之间的相互依赖关系（编译时加载）。效率要比 `CommonJS` 模块的加载方式高
+
+> 编译时加载（静态加载）：即在代码运行之前的编译阶段就确定其依赖关系和输出。
+> 静态加载要比运行时加载时的效率高
+```js
+// ES6 Module
+import {m1, m2, m3} from './module1.js';
+```
+以上代码的实质是从`module1.js`中加载3个方法，并不是解构赋值，**而是其他方法不会加载**。
+
+注意：`ES6`模块本身不是对象！！！
+
+`ES6 Module`中，单个导出`export xxx`，默认导出`export default xxx`
+#### 单个导出/导入
+单个导入并不是解构赋值，因为`ES6 Moudle`在实现了按需加载，未导入的功能完全不会加载。
+```js
+// app.js
+export const name = '小红';
+export const list = [1, 2, 3];
+
+// --------- 导入 --------------
+
+import {name} from './app'; // '小红'
+import * as info from './app'; // {name: '小红', list: [1, 2, 3]}
+```
+#### 默认导出/导入
+```js
+// app.js
+export default {
+    name : '1',
+    age: 20
+}
+
+// --------- 导入 --------------
+import info from './app.js'
+```
+#### 混合导出/导入
+- 该文件内用到混合导入，`import`语句必须先是默认导出，后面再是单个导出，顺序一定要正确否则会出问题。
+- `import * from './app.js` 全部导出
+```js
+// app.js
+export const name = '小红';
+export const list = [1, 2, 3];
+
+export default {
+    job: 'fe',
+    age: 25
+}
+
+// --------- 导入 --------------
+// 全部导出
+import * as all from './app.js';
+console.log(all); // {default:  {job: 'fe',age: 25}, name: '小红', list: [1, 2, 3]}
+
+// 该文件内用到混合导入，import语句必须先是默认导出，后面再是单个导出，顺序一定要正确否则会出问题。
+import info, {name, list} from './02_混合导出.js';
+```
+#### | export 关键字
+需要特别注意的是，`export`命令规定的是对外的接口，**必须与模块内部的变量建立一一对应关系**。
+```js
+// 报错
+export 1;
+
+// 报错
+var m = 1;
+export m;
+```
+上面两种写法都会报错，因为没有提供对外的接口。 第一种写法直接输出1，第二种写法通过变量`m`，还是直接输出1。1只是一个值，不是接口。正确的写法是下面这样。
+```js
+// 写法一
+export var m = 1;
+
+// 写法二
+var m = 1;
+export {m};
+
+// 写法三
+var n = 1;
+export {n as m};
+```
+#### | import 关键字
+##### 1. import 会发生变量提升
+以下代码不会报错，因为`import`会发生变量提升。
+```js
+foo();
+import {foo} from './app.js';
+```
+##### 2. import 定义的变量是常量，重新赋值会报错
+```js
+import info ,{name, list} from './02_混合导出.js';
+info = 1;   // 报错Uncaught TypeError: Assignment to constant variable.
+```
+##### 3. 导入后重命名
+使用`as`进行重命名
+`import {name as newName} from './app.js`  
+`import * as all from './app.js`
+
+#### | 导入值是原值的引用
+... 待补充
+
+#### | ES Module是静态编译
+由于`ES Module`是静态编译，在运行之前就会确定，所以以下写法都会报错:
+```js
+// 报错
+import { 'f' + 'oo' } from 'my_module';
+
+// 报错
+let module = 'my_module';
+import { foo } from module;
+
+// 报错
+if (x === 1) {
+import { foo } from 'module1';
+} else {
+import { foo } from 'module2';
+}
+```
+#### 总结
+- `ES6 Module`是静态的，不可以动态加载模块，其对依赖的关系和输出的功能在编译阶段就已经确定
+- `Es Module`导出的是值的引用，并且值都是可读的，不能修改。
+
+
+### 相关文章
+- [JavaScript 标准参考教程（alpha）- CommonJS规范](http://javascript.ruanyifeng.com/nodejs/module.html)
+- [阮一峰 - require.js的用法](https://www.ruanyifeng.com/blog/2012/11/require_js.html)
+- [JavaScript 标准参考教程（alpha）- RequireJS和AMD规范](https://javascript.ruanyifeng.com/tool/requirejs.html#toc3)
+- [ECMAScript 6 入门（第三版）- Module ](https://wizardforcel.gitbooks.io/es6-tutorial-3e/content/docs/module.html)
+- [ES6模块和CommonJS模块有哪些差异？](https://github.com/YvetteLau/Step-By-Step/issues/43)
