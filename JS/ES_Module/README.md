@@ -315,7 +315,6 @@ setTimeout(() => {
 `CommonJS`规范加载模块是同步的，代表着加载模块时会阻塞后续操作，此机制只适用于服务端。  
 **`AMD`为异步模块加载机制，适用于浏览器环境，从服务端加载模块，采用异步模式更加合理，因此浏览器一般采用`AMD`规范。**  
 `RequireJS`库主要用户用户端的客户管理。其模块 管理遵守`AMD`规范。  
-
 **`RequireJS`的基本思想是，通过`define`方法，将代码定义为模块；通过`require`方法，实现代码的模块加载。**
 #### 使用RequireJS
 引入`RequireJS`: `<script data-main="./main.js"  src="https://cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
