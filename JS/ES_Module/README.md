@@ -176,6 +176,8 @@ var module2 = {
 - `js`必须以一定顺序引入，当模块中的依赖过多时，可能会由于文件引入顺序问题而出错。
 - 由于以上两种原因，导致后期难以维护
 
+---
+
 ### 二、模块化规范
 可以通过模块化规范来解决以上产生的问题，所以`CommonJS -> AMD -> CMD -> UMD -> Es6 Module` 应运而生。
 ### 1.CommonJS【Node】
@@ -311,6 +313,8 @@ setTimeout(() => {
 #### 总结
 `CommonJS`解决了变量污染、文件依赖的问题。但是其模块都是同步加载，适合服务端开发，并不适合浏览器端使用。
 
+---
+
 ### 2.AMD（Asynchronous Module Definition）异步模块加载规范
 - `CommonJS`规范加载模块是同步的，代表着加载模块时会阻塞后续操作，此机制只适用于服务端。  
 - **`AMD`为异步模块加载机制，适用于浏览器环境，从服务端加载模块，采用异步模式更加合理，因此浏览器一般采用`AMD`规范。**  
@@ -384,6 +388,8 @@ require(['foo', 'bar'], function ( foo, bar ) {
 3. 减少了`<script>`，减少资源消耗、节省时间
 
 `AMD`模式可以用于浏览器环境，并且**允许非同步加载模块**，也**可以根据需要动态加载模块**。
+
+---
 
 ### 3.CMD (Common Module Definition)
 `CMD`是在`AMD`基础上改进的一种规范，和`AMD`不同在于对依赖模块的执行时机处理不同，`CMD`是就近依赖，而`AMD`是前置依赖。  
@@ -468,3 +474,8 @@ define(function (require, exports, module) {
     </body>
 </html>
 ```
+
+
+---
+
+### ES6 Module
