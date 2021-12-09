@@ -312,9 +312,10 @@ setTimeout(() => {
 `CommonJS`解决了变量污染、文件依赖的问题。但是其模块都是同步加载，适合服务端开发，并不适合浏览器端使用。
 
 ### 2.AMD（Asynchronous Module Definition）异步模块加载规范
-`CommonJS`规范加载模块是同步的，代表着加载模块时会阻塞后续操作，此机制只适用于服务端。  
-**`AMD`为异步模块加载机制，适用于浏览器环境，从服务端加载模块，采用异步模式更加合理，因此浏览器一般采用`AMD`规范。**  
-`RequireJS`库主要用户用户端的客户管理。其模块 管理遵守`AMD`规范。  
+- `CommonJS`规范加载模块是同步的，代表着加载模块时会阻塞后续操作，此机制只适用于服务端。  
+- **`AMD`为异步模块加载机制，适用于浏览器环境，从服务端加载模块，采用异步模式更加合理，因此浏览器一般采用`AMD`规范。**  
+- `RequireJS`库主要用于用户端的客户管理。其模块 管理遵守`AMD`规范。  
+
 **`RequireJS`的基本思想是，通过`define`方法，将代码定义为模块；通过`require`方法，实现代码的模块加载。**
 #### 使用RequireJS
 引入`RequireJS`: `<script data-main="./main.js"  src="https://cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
@@ -385,3 +386,85 @@ require(['foo', 'bar'], function ( foo, bar ) {
 `AMD`模式可以用于浏览器环境，并且**允许非同步加载模块**，也**可以根据需要动态加载模块**。
 
 ### 3.CMD (Common Module Definition)
+`CMD`是在`AMD`基础上改进的一种规范，和`AMD`不同在于对依赖模块的执行时机处理不同，`CMD`是就近依赖，而`AMD`是前置依赖。  
+- `AMD`推崇前置依赖：依赖必须一开始就写好，会先尽早的执行（依赖）模块，所有的`require`都会被提前执行。
+- `CMD`推崇就近依赖：什么时候`require`，什么时候模块再加载，实现了懒加载（延时加载）  
+
+`CMD`主要用于客户端，模块的加载是异步的，模块使用时才会执行。`Sea.js`中，所有模块都遵循`CMD`模块定义。
+#### | 定义模块
+##### (1) 定义没有依赖的模块
+```js
+//定义没有依赖的模块
+define(function(require, exports, module){
+    exports.xxx = value
+    module.exports = value
+})
+```
+##### （2）定义有依赖的模块
+```js
+//定义有依赖的模块
+define(function(require, exports, module){
+  //引入依赖模块(同步)
+  var module2 = require('./module2')
+  //引入依赖模块(异步)
+    require.async('./module3', function (m3) {})
+  //暴露模块
+  exports.xxx = value;
+})
+```
+##### 使用模块
+```js
+define(function (require) {
+  var m1 = require('./module1')
+  var m4 = require('./module4')
+  m1.show()
+  m4.show()
+})
+```
+#### | 简单使用CMD（Sea.js）
+```js
+// main.js
+define(function (require, exports, module) {
+    const {addCount, getCount} = require('./module1');
+    addCount();
+    addCount();
+    addCount();
+
+    const count = getCount();
+    console.log(count);
+})
+```
+```js
+// module1.js
+define(function (require, exports, module) {
+    let count = 0;
+
+    function addCount() {
+        count++;
+    }
+
+    function getCount() {
+        return count;
+    }
+
+    module.exports = {addCount, getCount};
+})
+```
+```html
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+        <script src="https://cdn.bootcdn.net/ajax/libs/seajs/3.0.3/sea.js"></script>
+        <script>
+            // 使用
+            seajs.use('./main'); 
+        </script>
+    </body>
+</html>
+```
