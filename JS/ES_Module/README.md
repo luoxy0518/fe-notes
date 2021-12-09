@@ -564,18 +564,18 @@ var n = 1;
 export {n as m};
 ```
 #### | import 关键字
-##### 1. import 会发生变量提升
+**1. import 会发生变量提升**
 以下代码不会报错，因为`import`会发生变量提升。
 ```js
 foo();
 import {foo} from './app.js';
 ```
-##### 2. import 定义的变量是常量，重新赋值会报错
+**2. import 定义的变量是常量，重新赋值会报错**
 ```js
 import info ,{name, list} from './02_混合导出.js';
 info = 1;   // 报错Uncaught TypeError: Assignment to constant variable.
 ```
-##### 3. 导入后重命名
+**3. 导入后重命名**
 使用`as`进行重命名
 `import {name as newName} from './app.js`  
 `import * as all from './app.js`
