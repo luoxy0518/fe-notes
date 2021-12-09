@@ -310,3 +310,31 @@ setTimeout(() => {
 
 #### 总结
 `CommonJS`解决了变量污染、文件依赖的问题。但是其模块都是同步加载，适合服务端开发，并不适合浏览器端使用。
+
+### 2.AMD（Asynchronous Module Definition）异步模块加载规范
+`CommonJS`规范加载模块是同步的，代表着加载模块时会阻塞后续操作，此机制只适用于服务端。
+**`AMD`为异步模块加载机制，适用于浏览器环境，从服务端加载模块，采用异步模式更加合理，因此浏览器一般采用`AMD`规范。**
+`RequireJS`库主要用户用户端的客户管理。其模块 管理遵守`AMD`规范。
+
+**`RequireJS`的基本思想是，通过`define`方法，将代码定义为模块；通过`require`方法，实现代码的模块加载。**
+#### 使用RequireJS
+引入`RequireJS`: `<script data-main="./main.js"  src="https://cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+`
+以上的`data-main`属性不可缺省，其代表整个项目的入口`js`文件。
+#### | 定义模块
+`define`方法用于定义模块，`RequireJS`要求一个模块放在一个单独的文件内。
+##### （1）独立模块
+```js
+// module1.js
+// 此模块没有依赖
+define(function () {
+    let count = 0;
+
+    function add() {
+        count++;
+    }
+
+    // 模块导出，可以是任何类型
+    return {add, count}
+})
+```
