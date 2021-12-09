@@ -323,7 +323,8 @@ setTimeout(() => {
 以上的`data-main`属性不可缺省，其代表整个项目的入口`js`文件。
 #### | 定义模块
 `define`方法用于定义模块，`RequireJS`要求一个模块放在一个单独的文件内。
-##### （1）独立模块
+##### （1）定义独立模块
+如果被定义的模块是一个独立模块，不需要依赖任何其他模块，可以直接用`define`方法生成。
 ```js
 // module1.js
 // 此模块没有依赖
@@ -338,3 +339,49 @@ define(function () {
     return {add, count}
 })
 ```
+##### （2）定义非独立对象
+如果定义的模块需要依赖其他模块，则须采用以下的写法定义模块：
+1. `define`方法接收的第一个参数： 依赖组成的数组
+2. 第二个参数为：当依赖加载完毕，执行的回调函数。它的**参数与依赖数组的顺序必须一一对应**
+```js
+// 此模块依赖module1
+define(['./module1'], function(m1){
+    return m1.count;
+});
+```
+当依赖过多时，写成这种方式会显得非常麻烦：
+```js
+define(
+    [       'dep1', 'dep2', 'dep3', 'dep4', 'dep5', 'dep6', 'dep7', 'dep8'],
+    function(dep1,   dep2,   dep3,   dep4,   dep5,   dep6,   dep7,   dep8){
+        ...
+    }
+);
+```
+为了解决以上的问题，`RequireJS`提供了一种更清晰的写法：
+```js
+define(function(require){
+    const d1 = require('./d1');
+    const d2 = require('./d2');
+    const d3 = require('./d3');
+    const d4 = require('./d4');
+    
+    return {d1, d2, d3, d4}
+})
+```
+#### | 调用模块
+`require`方法用于调用模块。它的参数与`define`方法类似。（写在主文件内？）
+```js
+require(['foo', 'bar'], function ( foo, bar ) {
+        foo.doSomething();
+});
+```
+
+#### 总结
+使用`define`与`require`两个方法定义和调用模块的方法，合称为`AMD`模式。通过`AMD`模式定义模块：
+1. 不会污染全局环境
+2. 清楚的显示了模块间的依赖关系
+3. 减少了`<script>`，减少资源消耗、节省时间
+
+`AMD`模式可以用于浏览器环境，并且**允许非同步加载模块**，也**可以根据需要动态加载模块**。
+
