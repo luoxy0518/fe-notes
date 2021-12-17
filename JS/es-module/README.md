@@ -604,7 +604,6 @@ import { foo } from 'module2';
 - `ES6 Module`是静态的，不可以动态加载模块，其对依赖的关系和输出的功能在编译阶段就已经确定
 - `Es Module`导出的是值的引用，并且值都是可读的，不能修改。
 
-
 ### 相关文章
 - [JavaScript 标准参考教程（alpha）- CommonJS规范](http://javascript.ruanyifeng.com/nodejs/module.html)
 - [阮一峰 - require.js的用法](https://www.ruanyifeng.com/blog/2012/11/require_js.html)
