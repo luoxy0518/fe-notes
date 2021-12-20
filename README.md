@@ -7,5 +7,5 @@
 
 
 ## | Javascript
-#### 1. [模块化发展史](https://github.com/luoxy0518/fe-notes/tree/master/JS/ES_Module/)
+#### 1. [模块化发展史](https://github.com/luoxy0518/fe-notes/tree/master/JS/es-module/)
 
