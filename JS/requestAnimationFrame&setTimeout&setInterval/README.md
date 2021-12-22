@@ -1,7 +1,6 @@
 # setTimeout vs setInterval vs requestAnimationFrame
 # 引言
 在日常开发中，我们常常会用到`js`有关定时器的`API`(`setTimeout setInterval`)，我们更多的只会停留在使用层面，很少去仔细思考两者之间的区别、优点、缺点。
-
 不知道你有没有思考过这个问题：明明可以用定时器`API`完成的事情，为啥`HTML5`又提供了`requestAnimationFrame`🤔？
 
 😠作为一个合格的前端工程师，深入理解这三者之间的联系、区别还是非常有必要的。今天本文就带着大家一起深入了解`setTimeout、setInterval、requestAnimationFrame`。
