@@ -24,6 +24,7 @@
 
 本文将重点介绍`setTimeout`、`setInterval`、`requestAnimationFrame`这三种`API`。
 
+# 正文
 ## setInterval
 `setInterval`方法按照指定的周期（毫秒）来调用函数或计算表达式。
 > 敲重点：定时器指定的时间间隔，表示的是何时将回调函数添加到消息队列，而不是何时执行代码。
