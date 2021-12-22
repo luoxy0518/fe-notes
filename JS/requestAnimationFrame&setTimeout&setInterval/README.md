@@ -1,4 +1,10 @@
 # setTimeout vs setInterval vs requestAnimationFrame
+# 引言
+在日常开发中，我们常常会用到`js`有关定时器的`API`(`setTimeout setInterval`)，我们更多的只会停留在使用层面，很少去仔细思考两者之间的区别、优点、缺点。
+
+`HTML5`又出现了一个`requestAnimationFrame`？这又是什么?
+
+作为一个合格的前端工程师，深入理解这三者之间的联系、区别还是非常有必要的。今天本文就带着大家一起深入了解`setTimeout、setInterval、requestAnimationFrame`。
 
 ## 动画前置知识
 ### 1. 计算机屏幕刷新率与浏览器重绘次数
@@ -63,7 +69,36 @@ setInterval(T, 100);
 2. 当回调函数执行时间过长时，某次的回调可能被直接忽略。
 ### 使用setTimeout替代setInterval
 ```js
-待补充
+/**
+ * 使用setTimeout模拟setInterval计时器
+ * @param fn
+ * @param delay
+ * @param args
+ * @returns {{clear: (function(): void)}}
+ * @private
+ */
+function _interval(fn, delay, ...args){
+    let timerId;
+
+    function callback(){
+        fn(...args);
+        timerId = setTimeout(callback, delay)
+    }
+
+    timerId = setTimeout(callback, delay);
+    // 清除计时器方法
+    return {
+        clear:() => clearTimeout(timerId)
+    };
+}
+
+// 开始计时器
+const timer  = _interval(function(){
+    console.log(1);
+}, 1000);
+
+// 清除该计时器
+setTimeout(timer.clear, 5 * 1000);
 ```
 
 ## setTimeout
@@ -197,3 +232,8 @@ cancelAnimationFrame(id);
     }
 })(window, document);
 ```
+
+# 写在最后
+看到这里，希望本文对你有一些帮助😁。如果文章中有错误，麻烦评论指出，一起进步~~~~。
+
+我是抹茶，不断学习的一名`coder`✌🏻。
