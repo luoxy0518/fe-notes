@@ -140,7 +140,13 @@ window.requestAnimationFrame(animateFn);
 对于`resize、scroll`高频触发事件来说，使用`requestAnimationFrame`可以保证在每个绘制区间内，函数只被执行一次，节省函数执行的开销。
 如果使用`setTimeout、setInterval`可能会在浏览器刷新间隔中有无用的回调函数调用，浪费资源。
 
-### 取消
+### cancelAnimation(id) 取消rFA
+与`setTimeout、setInterval`相同，`requestAnimationFrame`执行完后会返回一个代表此次执行的唯一`id`，可以用此`id`取消`rFA`。
+```js
+const id = requestAnimationFrame(function(){});
+cancelAnimationFrame(id);
+```
+
 ### 写个🌰
 使用`rFA`，实现点击`div`开始向右运动，点击停止，再次点击继续运动：
 ```html
