@@ -4,5 +4,5 @@
 
 ## | Javascript
 #### 1. [模块化发展史](https://github.com/luoxy0518/fe-notes/tree/master/JS/es-module/)
-#### 2. [进程 & 线程](https://github.com/luoxy0518/fe-notes/tree/master/JS/threads&processes/)
+#### 2. [进程 & 线程](https://github.com/luoxy0518/fe-notes/tree/master/web-broswer/threads&processes/)
 #### 3. [setTimeout & setInterval & requestAnimationFrame区别和联系](https://github.com/luoxy0518/fe-notes/tree/master/JS/requestAnimationFrame&setTimeout&setInterval/)
