@@ -8,4 +8,4 @@
 
 ## | 浏览器相关
 #### 1. [进程 & 线程](https://github.com/luoxy0518/fe-notes/tree/master/web-browser/threads&processes/)
-#### 1. [HTML、CSS、JS是如何渲染到页面上的？](https://github.com/luoxy0518/fe-notes/tree/master/web-browser/threads&processes/)
+#### 1. [HTML、CSS、JS是如何渲染到页面上的？](https://github.com/luoxy0518/fe-notes/tree/master/web-browser/render-process/)
