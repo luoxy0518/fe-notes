@@ -3,11 +3,18 @@
 通过本文，你可以了解到：`HTML、CSS、JS`是如何变成页面的具体流程。
 ## 1.构建DOM树
 ### 为什么要构建DOM树
-因为浏览器无法直接解析`HTML`，所以要将`HTML`转换为浏览器可以理解的结构-`DOM`树。
+因为浏览器无法直接解析`HTML`，所以要将`HTML`转换为浏览器可以理解的结构 -- `DOM`树。
 ### 构建过程
+<div style="width:70%;">
+
 ![img.png](./img/img.png)
+</div>
+
 在控制台打印`document`后，会输出如下的`DOM`树。
+<div style="width:70%;">
+
 ![img.png](./img/img2.png)
+</div>
 
 ## 2.构建CSS树
 ### 1）收集CSS来源
@@ -17,7 +24,11 @@
 
 同样，浏览器也无法直接理解纯文本的`CSS`，所以当浏览器接收到CSS时，会将其转换为可理解的`styleSheets`。
 在控制打印`document.styleSheets`，会输出以下结果，包含了三种样式来源
+<div style="width:70%;">
+
 ![img.png](./img/img3.png)
+</div>
+
 ### 2）计算其样式表中的属性值，使其标准化
 在我们编写代码时，定义的`CSS`样式是这样的：
 ```css
@@ -30,7 +41,11 @@ div {color:red; }
 ```
 但是对于浏览器来说`em`、`bold`、`green`这样的值是不好理解的，要将其转换为标准化的值，如下：
 
+<div style="width:70%;">
+
 ![img.png](./img/img4.png)
+</div>
+
 ### 3）计算`DOM`节点中的具体样式
 每个`DOM`节点会结合自己本身的样式，和继承其父级的样式，形成具体的样式。
 例如：
@@ -43,5 +58,16 @@ div  p {color:green;}
 div {color:red; }
 ```
 最后经过继承和计算后，会形成如下的`CSS`树。
+<div style="width:70%;">
 
 ![img.png](./img/img5.png)
+</div>
+
+## 3.合并为渲染树(`render tree`)
+此时`DOM`树和`CSS`树已经构建完毕，此时需要构建渲染树，计算出**可见元素的具体几何信息（元素的尺寸和位置）** 。
+如下图：
+<div style="width:70%;">
+
+![img.png-w140](./img/img6.png)
+</div>
+
