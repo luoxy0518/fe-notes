@@ -21,4 +21,4 @@
 - [02_上下文对象、调用栈](https://github.com/luoxy0518/fe-notes/tree/master/JS/js-execution)
 
 ### | 课程总结面试题
-- [02_上下文对象、调用栈](https://github.com/luoxy0518/fe-notes/tree/master/interview-questions)
+- [问题总结](https://github.com/luoxy0518/fe-notes/tree/master/interview-questions)
